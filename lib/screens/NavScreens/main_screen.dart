@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:fire_flutter/constants/color_contatnts.dart';
 import 'package:fire_flutter/screens/AddRoomScreen/add_rooms.dart';
-import 'package:fire_flutter/screens/dashboard/listofscreens/home_screen.dart';
+import 'package:fire_flutter/screens/NavScreens/listofscreens/NotificationScreen/notification_screen.dart';
+import 'package:fire_flutter/screens/NavScreens/listofscreens/homeScreen/home_screen.dart';
 import 'package:fire_flutter/screens/home_page.dart';
 import 'package:fire_flutter/screens/userSignup/user_signup_screen.dart';
 import 'package:fire_flutter/utils/helper_widgets.dart';
@@ -10,25 +11,33 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../utils/custom_nav.dart';
+import 'listofscreens/profileScreen/profile_screen.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var currentIndex = 0.obs;
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
 
-    List Pages = [HomeScreen(), Text("SEARCH"), MyHomePage(), UserSignup()];
+class _DashboardScreenState extends State<DashboardScreen> {
+  int currentIndex = 0;
+  @override
+  Widget build(BuildContext context) {
+    List Pages = [
+      HomeScreen(),
+      MyHomePage(),
+      NotificationScreen(),
+      UserProfileDetails()
+    ];
     Color activeColor = Colors.green;
     Color inActiveColor = Colors.green.shade100;
     log(Get.isDarkMode.toString());
     return Scaffold(
-        drawer: currentIndex.value == 0 ? Drawer() : null,
+        drawer: currentIndex == 0 ? Drawer() : null,
         extendBody: true,
-        body: Obx(
-          () => Center(
-            child: Pages.elementAt(currentIndex.value),
-          ),
+        body: Center(
+          child: Pages.elementAt(currentIndex),
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -43,6 +52,12 @@ class DashboardScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   NavigatorIndexIcon(
+                    onPressNavIndex: () {
+                      print('object');
+                      setState(() {
+                        currentIndex = 0;
+                      });
+                    },
                     currentIndex: currentIndex,
                     activeColor: activeColor,
                     inActiveColor: inActiveColor,
@@ -50,10 +65,15 @@ class DashboardScreen extends StatelessWidget {
                     icon: Icons.home_rounded,
                   ),
                   NavigatorIndexIcon(
+                      onPressNavIndex: () {
+                        setState(() {
+                          currentIndex = 1;
+                        });
+                      },
                       currentIndex: currentIndex,
                       activeColor: activeColor,
                       inActiveColor: inActiveColor,
-                      icon: Icons.search_rounded,
+                      icon: Icons.bookmark_rounded,
                       iconIndex: 1),
                   Container(
                     width: 50,
@@ -67,12 +87,22 @@ class DashboardScreen extends StatelessWidget {
                             color: Colors.white, weight: 500.0)),
                   ),
                   NavigatorIndexIcon(
+                      onPressNavIndex: () {
+                        setState(() {
+                          currentIndex = 2;
+                        });
+                      },
                       currentIndex: currentIndex,
                       activeColor: activeColor,
                       inActiveColor: inActiveColor,
-                      icon: Icons.bookmark_rounded,
+                      icon: Icons.notifications,
                       iconIndex: 2),
                   NavigatorIndexIcon(
+                      onPressNavIndex: () {
+                        setState(() {
+                          currentIndex = 3;
+                        });
+                      },
                       currentIndex: currentIndex,
                       activeColor: activeColor,
                       inActiveColor: inActiveColor,

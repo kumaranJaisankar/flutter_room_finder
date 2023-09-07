@@ -34,6 +34,19 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC3BfQIf1YLBzZF7LcljVFFJZZ9qAXqJA4" />
+          <!-- firbase notification icon  -->
+        <meta-data 
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_play_store_512_removebg_preview" />
+        
+        <!-- <meta-data 
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@color/colorAccent"/> -->
+
+        <meta-data 
+            android:name="com.google.firebase.messaging.default_notification_color" 
+            android:resource="@color/custom_color" />
+
         <!-- image corpper -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

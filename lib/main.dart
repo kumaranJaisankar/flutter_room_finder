@@ -1,13 +1,10 @@
-import 'dart:developer';
-
+import 'package:fire_flutter/api/notification_api.dart';
 import 'package:fire_flutter/controller/auth_controller.dart';
 import 'package:fire_flutter/controller/signup_controller.dart';
 import 'package:fire_flutter/controller/verify_otp.dart';
-import 'package:fire_flutter/notificationApi/firbase_notification.dart';
-import 'package:fire_flutter/screens/home_page.dart';
+import 'package:fire_flutter/api/firbase_notification.dart';
 import 'package:fire_flutter/theme/theme_constants.dart';
 import 'package:flutter/services.dart';
-// import 'package:fire_flutter/screens/home_page.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,8 +14,11 @@ import 'firebase_options.dart';
 
 import 'package:firebase_app_check/firebase_app_check.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ).then((value) => Get.put(AuthController()));

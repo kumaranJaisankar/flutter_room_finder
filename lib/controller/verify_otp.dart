@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer';
 
-import '../screens/dashboard/dashboard.dart';
+import '../screens/NavScreens/main_screen.dart';
 import '../utils/helper_widgets.dart';
 
 class OtpController extends GetxController {
@@ -52,8 +52,8 @@ class OtpController extends GetxController {
           Get.off(() => UserSignup());
         }).catchError((e) => print(e));
       } else {
-        log('hey mavanay');
-        print(value.docs.first.data());
+        log('gomalay');
+        print(value.docs.first.data().runtimeType);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(
             'UserDetail', jsonEncode(value.docs.first.data()));

@@ -1,6 +1,7 @@
 import 'package:fire_flutter/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void loggoutAlert(BuildContext context) {
   showDialog<void>(
@@ -21,7 +22,10 @@ void loggoutAlert(BuildContext context) {
             child: const Text(
               'YES',
             ),
-            onPressed: () {
+            onPressed: () async {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              await prefs.remove('UserDetail');
               AuthController.instance.logout();
             },
           )

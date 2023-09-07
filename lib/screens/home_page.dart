@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:fire_flutter/constants/common_constant.dart';
@@ -11,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -22,32 +25,26 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Stream<List<Rooms>> roomsList() => FirebaseFirestore.instance
-      .collection('rooms')
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Rooms.fromJson(doc.data())).toList());
+          .collection('rooms')
+          .snapshots()
+          .map((snapshot) {
+        log('messagsdsadasde');
+        print(snapshot.docs.first.data());
+        return snapshot.docs.map((doc) => Rooms.fromJson(doc.data())).toList();
+      });
 
   Future<void> _handelRefresh() async {}
 
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
-    Future apiee() async {
-      await FirebaseFirestore.instance
-          .collection('rooms')
-          .get()
-          .then((QuerySnapshot snapshot) {
-        snapshot.docs.forEach((f) => print(f.data()));
-      });
-    }
 
-    apiee();
-    print(FirebaseFirestore.instance.collection('rooms').get());
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
               loggoutAlert(context);
+
               // AuthController.instance.logout();
             },
             icon: Icon(Icons.logout)),
@@ -73,44 +70,51 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-          heroTag: UniqueKey(),
-          isExtended: true,
-          label: const Text('Add Rooms'),
-          shape: ContinuousRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0)),
-          onPressed: () {
-            Get.to(() => AddRooms());
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => const AddRooms()));
-          },
-          icon: const Icon(Icons.add_business_sharp)),
-      body: DoubleBackToCloseApp(
-        snackBar: SnackBar(content: Text('Tap back again to Exit')),
-        child: StreamBuilder(
-            stream: roomsList(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text("error occured ${snapshot.error}");
-              } else if (snapshot.hasData) {
-                final datas = snapshot.data;
-                return LiquidPullToRefresh(
-                  color: Colors.green,
-                  onRefresh: _handelRefresh,
-                  child: ListView(
-                    children: datas!.map(buildRooms).toList(),
-                  ),
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            }),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //     heroTag: UniqueKey(),
+      //     isExtended: true,
+      //     label: const Text('Add Rooms'),
+      //     shape: ContinuousRectangleBorder(
+      //         borderRadius: BorderRadius.circular(20.0)),
+      //     onPressed: () {
+      //       Get.to(() => AddRooms());
+      //       // Navigator.push(context,
+      //       //     MaterialPageRoute(builder: (context) => const AddRooms()));
+      //     },
+      //     icon: const Icon(Icons.add_business_sharp)),
+      body: StreamBuilder(
+          stream: roomsList(),
+          builder: (context, snapshot) {
+            print(snapshot.data);
+            print(snapshot);
+            print('object');
+            print('kum');
+            if (snapshot.hasError) {
+              return Text("error occured ${snapshot.error}");
+            } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+              return Center(
+                  child: Text(
+                'empty',
+                style: TextStyle(fontSize: 20.0),
+              ));
+            } else if (snapshot.hasData) {
+              final datas = snapshot.data;
+              return LiquidPullToRefresh(
+                color: Colors.green,
+                onRefresh: _handelRefresh,
+                child: ListView(
+                  children: datas!.map(buildRooms).toList(),
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
     );
   }
 
   Widget buildRooms(Rooms room) => Slidable(
-        key: UniqueKey(),
+        key: Key(room.id),
         startActionPane: ActionPane(
           motion: const ScrollMotion(),
           // dismissible: DismissiblePane(onDismissed: () {
@@ -135,10 +139,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         endActionPane: ActionPane(
           motion: ScrollMotion(),
-          dismissible: DismissiblePane(onDismissed: () {
+          dismissible: DismissiblePane(onDismissed: () async {
             final docs =
                 FirebaseFirestore.instance.collection('rooms').doc(room.id);
-            docs.delete();
+            print(docs);
+            await docs.delete();
             Toast.show('deleted ${room.roomName}',
                 duration: Toast.lengthLong, gravity: Toast.bottom);
           }),

@@ -144,16 +144,38 @@ class _HeroPageState extends State<HeroPage> {
                               ),
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                addHorizontalSpacer(10.0),
-                                Icon(Icons.location_on,
-                                    color: Get.isDarkMode
-                                        ? Colors.green.shade200
-                                        : Colors.black45),
-                                addHorizontalSpacer(10.0),
-                                Text(
-                                  widget.room.location,
-                                  style: TextStyle(fontSize: 15.0),
+                                Row(
+                                  children: [
+                                    addHorizontalSpacer(10.0),
+                                    Icon(Icons.location_on,
+                                        color: Get.isDarkMode
+                                            ? Colors.green.shade200
+                                            : Colors.black45),
+                                    addHorizontalSpacer(10.0),
+                                    Text(
+                                      widget.room.location,
+                                      style: TextStyle(fontSize: 15.0),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 14.0),
+                                      child: Text(
+                                        widget.room.rating.toString(),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
                                 )
                               ],
                             ),
@@ -168,13 +190,32 @@ class _HeroPageState extends State<HeroPage> {
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20.0)),
                                 child: GoogleMap(
-                                    mapType: MapType.normal,
-                                    initialCameraPosition: CameraPosition(
-                                        zoom: 11,
-                                        target: LatLng(
+                                  mapType: MapType.normal,
+                                  initialCameraPosition: CameraPosition(
+                                      zoom: 11,
+                                      target: LatLng(
+                                          widget.room.geoLocation.latitude,
+                                          widget.room.geoLocation.longitude)),
+                                  markers: {
+                                    Marker(
+                                        markerId:
+                                            MarkerId(widget.room.location),
+                                        position: LatLng(
                                             widget.room.geoLocation.latitude,
-                                            widget
-                                                .room.geoLocation.longitude))),
+                                            widget.room.geoLocation.longitude),
+                                        draggable: true,
+                                        onDragEnd: (value) {
+                                          // value is the new position
+                                        },
+                                        infoWindow: InfoWindow(
+                                            title: 'Room finder',
+                                            snippet:
+                                                '${widget.room.roomName} house avalibale here'),
+                                        icon: BitmapDescriptor
+                                            .defaultMarkerWithHue(
+                                                BitmapDescriptor.hueRose)),
+                                  },
+                                ),
                               ),
                             )
                           ],

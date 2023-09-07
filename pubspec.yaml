@@ -36,6 +36,8 @@ dependencies:
   double_back_to_close_app: ^2.1.0
   firebase_messaging: ^14.6.7
   shared_preferences: ^2.2.0
+  flutter_rating_bar: ^4.0.1
+  flutter_local_notifications: ^15.1.1
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,7 @@ flutter:
   assets:
     - assets/images/Jealous-amico.png
     - assets/images/
+    - assets/logo/kik.png
 
   # fonts:
   #   - family: Schyler

@@ -3,7 +3,6 @@
 //     final rooms = roomsFromJson(jsonString);
 
 import 'dart:convert';
-// import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -21,6 +20,7 @@ class Rooms {
   bool isAvalibale;
   String imgUrl;
   GeoPoint geoLocation;
+  double rating;
 
   Rooms(
       {this.id = '',
@@ -29,7 +29,8 @@ class Rooms {
       required this.location,
       required this.isAvalibale,
       required this.imgUrl,
-      required this.geoLocation});
+      required this.geoLocation,
+      required this.rating});
 
   factory Rooms.fromJson(Map<String, dynamic> json) => Rooms(
         id: json["id"],
@@ -38,7 +39,21 @@ class Rooms {
         location: json["location"],
         isAvalibale: json["isAvalibale"],
         imgUrl: json["imgUrl"],
-        geoLocation: json["geoLocation"],
+        geoLocation: json['geoLocation'],
+        rating: json["rating"],
+      );
+  factory Rooms.geoPointJson(Map<String, dynamic> json) => Rooms(
+        id: json["id"],
+        roomName: json["roomName"],
+        price: json["price"],
+        location: json["location"],
+        isAvalibale: json["isAvalibale"],
+        imgUrl: json["imgUrl"],
+        geoLocation: GeoPoint(
+          GeoLocation.fromJson(json["geoLocation"]).latitude,
+          GeoLocation.fromJson(json["geoLocation"]).longitude,
+        ),
+        rating: json["rating"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -48,6 +63,27 @@ class Rooms {
         "location": location,
         "isAvalibale": isAvalibale,
         "imgUrl": imgUrl,
-        "geoLocation": geoLocation
+        "geoLocation": geoLocation,
+        "rating": rating,
+      };
+}
+
+class GeoLocation {
+  double latitude;
+  double longitude;
+
+  GeoLocation({
+    required this.latitude,
+    required this.longitude,
+  });
+
+  factory GeoLocation.fromJson(Map<String, dynamic> json) => GeoLocation(
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "latitude": latitude,
+        "longitude": longitude,
       };
 }

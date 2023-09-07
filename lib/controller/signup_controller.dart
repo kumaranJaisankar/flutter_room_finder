@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fire_flutter/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer';
 
 import '../models/user_model.dart';
@@ -19,6 +22,7 @@ class SignUpController extends GetxController {
 
   Future<void> createUserDetails(String userName, String email,
       String avatarUrl, String userId, String phNum) async {
+    log('hola');
     final docset = FirebaseFirestore.instance.collection('Users').doc(userId);
 
     final userDetails = {
@@ -26,10 +30,30 @@ class SignUpController extends GetxController {
       'email': email,
       'avatraUrl': avatarUrl
     };
-    await docset.update(userDetails);
+    // ignore: unused_local_variable
+    var newVariable = await docset.update(userDetails);
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    try {
+      log('othsdfsdfsd');
+      print(userName.runtimeType);
+      Map<String, dynamic> detailObj = {
+        'id': userId,
+        'name': userName,
+        'email': email,
+        'phoneNo': phNum,
+        'avatraUrl': avatarUrl
+      };
+
+      await prefs.setString('UserDetail', jsonEncode(detailObj));
+    } catch (e) {
+      print(e);
+    }
 
     log(userName);
     log(email);
+    log(phNum);
     log(avatarUrl);
     log(userId);
   }

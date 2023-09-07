@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:fire_flutter/screens/dashboard/dashboard.dart';
+import 'package:fire_flutter/screens/NavScreens/main_screen.dart';
 import 'package:fire_flutter/screens/loginscreen/intro_screen.dart';
 import 'package:fire_flutter/screens/loginscreen/otp_screen.dart';
 import 'package:fire_flutter/utils/helper_widgets.dart';

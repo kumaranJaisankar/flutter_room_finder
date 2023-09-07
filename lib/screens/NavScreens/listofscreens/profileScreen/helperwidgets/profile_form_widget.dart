@@ -1,32 +1,66 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:fire_flutter/constants/common_constant.dart';
 import 'package:fire_flutter/controller/signup_controller.dart';
 import 'package:fire_flutter/controller/verify_otp.dart';
+import 'package:fire_flutter/models/user_model.dart';
 import 'package:fire_flutter/screens/NavScreens/main_screen.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../utils/custom_widgets.dart';
-import '../../utils/helper_widgets.dart';
 import 'package:path/path.dart' as p;
 import 'package:image_cropper/image_cropper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Userform extends StatefulWidget {
-  Userform({super.key, required this.phoneNumber});
-  final String phoneNumber;
+import '../../../../../utils/custom_widgets.dart';
+import '../../../../../utils/helper_widgets.dart';
+
+class ProfileDetails extends StatefulWidget {
+  const ProfileDetails({super.key});
 
   @override
-  State<Userform> createState() => _UserformState();
+  State<ProfileDetails> createState() => _ProfileDetailsState();
 }
 
-class _UserformState extends State<Userform> {
+class _ProfileDetailsState extends State<ProfileDetails> {
   final contrlr = Get.put(OtpController());
+
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _phoneNum = TextEditingController();
+  String? id = '';
+  String? name = '';
+  String? email = '';
+  String? phoneNumber = '';
+  String profilePicUrl =
+      'https://res.cloudinary.com/dtbarluca/image/upload/v1692694826/user_1177568_mmmdi6.png';
 
   final signupController = Get.put(SignUpController());
 
   File? selectedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    getFromStorage();
+  }
+
+  Future<void> getFromStorage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userDetail = prefs.getString('UserDetail');
+    Users usermaping = Users.fromJson(jsonDecode(userDetail!));
+
+    setState(() {
+      id = usermaping.id;
+      name = usermaping.name;
+      email = usermaping.email;
+      phoneNumber = usermaping.phoneNo;
+      profilePicUrl = usermaping.avatraUrl!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +126,7 @@ class _UserformState extends State<Userform> {
                     )
                   : CircleAvatar(
                       radius: 80.0,
-                      backgroundImage: NetworkImage(
-                          'https://res.cloudinary.com/dtbarluca/image/upload/v1692694826/user_1177568_mmmdi6.png'),
+                      backgroundImage: NetworkImage(profilePicUrl!),
                     ),
               Positioned(
                   bottom: 0,
@@ -111,74 +144,74 @@ class _UserformState extends State<Userform> {
             ]),
           ),
           addVerticalSpacer(30.0),
-          customTextField('Username', 'eg. Rahul', Icons.person,
-              signupController.username.text, true, signupController.username),
+          customTextField(
+              'Username', 'eg. Rahul', Icons.person, name!, true, _name),
           addVerticalSpacer(20.0),
-          customTextField('Email', 'Enter Email', Icons.email,
-              signupController.email.text, true, signupController.email),
+          customTextField(
+              'Email', 'Enter Email', Icons.email, email!, true, _email),
           addVerticalSpacer(20.0),
-          Obx(
-            () => customTextField('Phone No', 'Enter phone Number', Icons.phone,
-                contrlr.phoneNo.value, false, signupController.phno),
-          ),
+          customTextField('Phone No', 'Enter phone Number', Icons.phone,
+              phoneNumber!, false, _phoneNum),
           addVerticalSpacer(25.0),
-          SizedBox(
-            width: double.infinity,
-            height: 40.0,
-            child: ElevatedButton(
-                onPressed: () async {
-                  // String userId = contrlr.userId.value;
-                  // String userName = signupController.username.text.trim();
-                  // String email = signupController.email.text.trim();
-                  // String avatarUrl = contrlr.avatarNetworkUrl.value;
-                  EasyLoading.show();
-                  if (_globalKey.currentState!.validate()) {
-                    String userId = contrlr.userId.value;
-                    String userName = signupController.username.text.trim();
-                    String email = signupController.email.text.trim();
-                    String avatarUrl = contrlr.avatarNetworkUrl.value;
-                    String phNum = contrlr.phoneNo.value;
+          ElevatedButton.icon(
+              onPressed: () async {
+                FocusManager.instance.primaryFocus?.unfocus();
+                // String userId = contrlr.userId.value;
+                // String userName = signupController.username.text.trim();
+                // String email = signupController.email.text.trim();
+                // String avatarUrl = contrlr.avatarNetworkUrl.value;
+                EasyLoading.show();
+                if (_globalKey.currentState!.validate()) {
+                  String userId = id!;
+                  String userName = _name.text.trim();
+                  String email = _email.text.trim();
+                  String avatarUrl = profilePicUrl;
+                  String phNum = contrlr.phoneNo.value;
 
-                    if (selectedImage != null) {
-                      final path =
-                          '${DateTime.now().toIso8601String()}+ ${p.basename(selectedImage!.path)}';
-                      final imageInstance = FirebaseStorage.instance
-                          .ref()
-                          .child('profilePics')
-                          .child(path);
-                      final result = await imageInstance
-                          .putFile(File(selectedImage!.path));
-                      avatarUrl = await result.ref.getDownloadURL();
-                      SignUpController.instance.createUserDetails(
-                          userName, email, avatarUrl, userId, phNum);
-                      EasyLoading.dismiss();
-                      Get.offAll(() => DashboardScreen());
-                    } else {
-                      SignUpController.instance.createUserDetails(
-                          userName, email, avatarUrl, userId, phNum);
-                      EasyLoading.dismiss();
-                      Get.offAll(() => DashboardScreen());
-                    }
-                    signupController.username.text = '';
-                    signupController.email.text = '';
+                  if (selectedImage != null) {
+                    final path =
+                        '${DateTime.now().toIso8601String()}${p.basename(selectedImage!.path)}';
+                    final imageInstance = FirebaseStorage.instance
+                        .ref()
+                        .child('profilePics')
+                        .child(path);
+                    final result =
+                        await imageInstance.putFile(File(selectedImage!.path));
+                    avatarUrl = await result.ref.getDownloadURL();
+                    SignUpController.instance.createUserDetails(
+                        userName, email, avatarUrl, userId, phNum);
+                    EasyLoading.dismiss();
+                    EasyLoading.showSuccess('Successfully updated');
                   } else {
-                    // contrlr.userId.value = 'k1k2k3k4';
-                    // contrlr.phoneNo.value = '9092296765';
-                    // contrlr.avatarNetworkUrl.value =
-                    //     'https://res.cloudinary.com/dtbarluca/image/upload/v1692694826/user_1177568_mmmdi6.png';
-                    // log(signupController.username.text);
-                    // log(contrlr.avatarNetworkUrl.value);
-                    // log(contrlr.userId.value);
+                    SignUpController.instance.createUserDetails(
+                        userName, email, avatarUrl, userId, phNum);
+                    EasyLoading.dismiss();
+                    EasyLoading.showSuccess('Successfully updated');
                   }
-                },
-                child: Text('Continue'),
-                style: ButtonStyle(
-                    textStyle: MaterialStateProperty.resolveWith((states) =>
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
-                    elevation: MaterialStateProperty.all(10),
-                    shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(150.0))))),
-          ),
+                }
+              },
+              icon: Icon(Icons.save_alt),
+              label: Text('Save'),
+              style: ButtonStyle(
+                  textStyle: MaterialStateProperty.resolveWith((states) =>
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                  elevation: MaterialStateProperty.all(10),
+                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(150.0))))),
+          ElevatedButton.icon(
+            onPressed: () {
+              loggoutAlert(context);
+            },
+            icon: Icon(Icons.logout),
+            label: Text('Logout'),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.red),
+                textStyle: MaterialStateProperty.resolveWith((states) =>
+                    TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+                elevation: MaterialStateProperty.all(10),
+                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(150.0)))),
+          )
         ],
       ),
     );
