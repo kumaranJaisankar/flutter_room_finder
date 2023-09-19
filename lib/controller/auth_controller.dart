@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:fire_flutter/screens/NavScreens/main_screen.dart';
 import 'package:fire_flutter/screens/loginscreen/intro_screen.dart';
 import 'package:fire_flutter/screens/loginscreen/otp_screen.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 // import 'package:flutter/material.dart';
@@ -18,7 +18,6 @@ class AuthController extends GetxController {
   @override
   void onReady() {
     firebaseUser = Rx<User?>(_auth.currentUser);
-
     firebaseUser.bindStream(_auth.userChanges());
     ever(firebaseUser, _setInitialScreen);
   }

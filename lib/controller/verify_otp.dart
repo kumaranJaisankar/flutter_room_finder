@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer';
 
 import '../screens/NavScreens/main_screen.dart';
-import '../utils/helper_widgets.dart';
+import '../utils/helperwidgets/helper_widgets.dart';
 
 class OtpController extends GetxController {
   static OtpController get instance => Get.find();

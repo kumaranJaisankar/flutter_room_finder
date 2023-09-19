@@ -1,16 +1,13 @@
 import 'dart:developer';
 
-import 'package:fire_flutter/constants/color_contatnts.dart';
 import 'package:fire_flutter/screens/AddRoomScreen/add_rooms.dart';
-import 'package:fire_flutter/screens/NavScreens/listofscreens/NotificationScreen/notification_screen.dart';
+import 'package:fire_flutter/screens/NavScreens/listofscreens/NotificationScreen/notifications_screen.dart';
 import 'package:fire_flutter/screens/NavScreens/listofscreens/homeScreen/home_screen.dart';
 import 'package:fire_flutter/screens/home_page.dart';
-import 'package:fire_flutter/screens/userSignup/user_signup_screen.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../utils/custom_nav.dart';
+import '../../utils/customwidgets/custom_nav.dart';
 import 'listofscreens/profileScreen/profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {

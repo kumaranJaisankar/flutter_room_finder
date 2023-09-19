@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fire_flutter/screens/detailViews/detail_view.dart';
+import 'package:fire_flutter/screens/roomdetail/detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../models/room_model.dart';
-import '../utils/helper_widgets.dart';
+import '../../models/room_model.dart';
+import '../helperwidgets/helper_widgets.dart';
 
 class MySearchDelegate extends SearchDelegate {
   @override
@@ -68,7 +68,7 @@ class MySearchDelegate extends SearchDelegate {
           tileColor: Colors.green.withOpacity(0.1),
           onTap: () {
             query = room.roomName;
-            Get.to(() => HeroPage(room: room));
+            Get.to(() => RoomDetailScreen(room: room));
           },
           // leading: SizedBox(
           //     width: 50.0,

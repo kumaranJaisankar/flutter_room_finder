@@ -1,4 +1,5 @@
 import 'package:fire_flutter/api/notification_api.dart';
+import 'package:fire_flutter/constants/shared_prf_data.dart';
 import 'package:fire_flutter/controller/auth_controller.dart';
 import 'package:fire_flutter/controller/signup_controller.dart';
 import 'package:fire_flutter/controller/verify_otp.dart';
@@ -11,10 +12,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:toast/toast.dart';
 import 'firebase_options.dart';
-
 import 'package:firebase_app_check/firebase_app_check.dart';
-
-final navigatorKey = GlobalKey<NavigatorState>();
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,10 +30,12 @@ Future<void> main() async {
   await FirebaseNotification().initNotification();
   Get.put(SignUpController());
   Get.put(OtpController());
+  Get.put(LetGetData());
   await SystemChrome.setPreferredOrientations([
     //this will make application in same orientaion
     DeviceOrientation.portraitUp,
   ]);
+  tz.initializeTimeZones();
   runApp(const MyApp());
   configLoading();
 }

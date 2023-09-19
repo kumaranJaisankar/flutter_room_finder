@@ -1,7 +1,7 @@
 import 'package:fire_flutter/constants/color_contatnts.dart';
 import 'package:fire_flutter/controller/verify_otp.dart';
 import 'package:fire_flutter/screens/loginscreen/phone_num_screen.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';

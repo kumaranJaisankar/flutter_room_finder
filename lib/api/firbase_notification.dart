@@ -1,10 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fire_flutter/api/notification_api.dart';
 import 'package:fire_flutter/models/room_model.dart';
-import 'package:fire_flutter/screens/detailViews/detail_view.dart';
+import 'package:fire_flutter/models/user_model.dart';
+import 'package:fire_flutter/screens/roomdetail/detail_view.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../constants/json_notifi.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print('title: ${message.notification?.title}');
@@ -20,22 +27,11 @@ class FirebaseNotification {
 
     Map<String, dynamic> payLoad = message.data;
 
-    var ply = {
-      "imgUrl": payLoad["imgUrl"],
-      "isAvalibale": jsonDecode(payLoad["isAvalibale"]),
-      "geoLocation": {
-        "latitude": jsonDecode(payLoad["geoLocation"])["latitude"],
-        "longitude": jsonDecode(payLoad["geoLocation"])["longitude"]
-      },
-      "price": jsonDecode(payLoad["price"]),
-      "rating": jsonDecode(payLoad["rating"]) + 0.0,
-      "location": payLoad["location"],
-      "id": payLoad["id"],
-      "roomName": payLoad["roomName"]
-    };
+    Map<String, dynamic> ply = jsonForDetailpage(payLoad);
+
     Rooms room = Rooms.geoPointJson(ply);
 
-    Get.to(() => HeroPage(room: room));
+    Get.to(() => RoomDetailScreen(room: room));
   }
 
   Future initPushMessage() async {
@@ -44,12 +40,37 @@ class FirebaseNotification {
             alert: true, badge: true, sound: true);
     FirebaseMessaging.instance.getInitialMessage().then(handelMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(handelMessage);
+    FirebaseMessaging.onMessage.listen((event) async {
+      String? title = event.notification?.title;
+      String? body = event.notification?.body;
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      final String? fromStore = pref.getString('UserDetail');
+      Users userDetail = Users.fromJson(jsonDecode(fromStore!));
+      String? userId = userDetail.id;
+      final doc = FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userId)
+          .collection('notification')
+          .doc();
+      var docDetails = {
+        "id": doc.id,
+        "msgReciveTime": DateTime.now(),
+        "payload": jsonEncode(event.data),
+        "title": title,
+        "body": body,
+        "isOpend": false,
+      };
+      await doc.set(docDetails).then((value) => print('added success'));
+
+      NotificationService().showNotification(
+          title: title, body: body, payLoad: jsonEncode(event.data));
+    });
   }
 
   Future<void> initNotification() async {
     await _firbaseMessage.requestPermission();
     final fcmToken = await _firbaseMessage.getToken();
-    log(fcmToken.toString());
+    log('fcm token : ${fcmToken.toString()}');
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
 
     initPushMessage();

@@ -1,6 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:fire_flutter/models/room_model.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
@@ -8,15 +8,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'dart:developer';
 
-class HeroPage extends StatefulWidget {
-  const HeroPage({super.key, required this.room});
+class RoomDetailScreen extends StatefulWidget {
+  const RoomDetailScreen({super.key, required this.room});
   final Rooms room;
 
   @override
-  State<HeroPage> createState() => _HeroPageState();
+  State<RoomDetailScreen> createState() => _RoomDetailScreenState();
 }
 
-class _HeroPageState extends State<HeroPage> {
+class _RoomDetailScreenState extends State<RoomDetailScreen> {
   Razorpay? _razorpay;
 
   @override

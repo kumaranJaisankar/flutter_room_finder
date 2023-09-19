@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:fire_flutter/constants/color_contatnts.dart';
 import 'package:fire_flutter/screens/loginscreen/otp_screen.dart';
 import 'package:fire_flutter/theme/theme_constants.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';

@@ -7,8 +7,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer';
 
-import '../models/user_model.dart';
-
 class SignUpController extends GetxController {
   static SignUpController get instance => Get.find();
 
@@ -22,7 +20,6 @@ class SignUpController extends GetxController {
 
   Future<void> createUserDetails(String userName, String email,
       String avatarUrl, String userId, String phNum) async {
-    log('hola');
     final docset = FirebaseFirestore.instance.collection('Users').doc(userId);
 
     final userDetails = {
@@ -36,8 +33,6 @@ class SignUpController extends GetxController {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {
-      log('othsdfsdfsd');
-      print(userName.runtimeType);
       Map<String, dynamic> detailObj = {
         'id': userId,
         'name': userName,

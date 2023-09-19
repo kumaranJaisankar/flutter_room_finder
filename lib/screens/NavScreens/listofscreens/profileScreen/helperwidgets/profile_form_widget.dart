@@ -15,8 +15,8 @@ import 'package:path/path.dart' as p;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../../utils/custom_widgets.dart';
-import '../../../../../utils/helper_widgets.dart';
+import '../../../../../utils/customwidgets/custom_widgets.dart';
+import '../../../../../utils/helperwidgets/helper_widgets.dart';
 
 class ProfileDetails extends StatefulWidget {
   const ProfileDetails({super.key});

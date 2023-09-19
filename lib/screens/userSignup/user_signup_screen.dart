@@ -3,7 +3,7 @@ import 'package:fire_flutter/constants/color_contatnts.dart';
 import 'package:fire_flutter/controller/verify_otp.dart';
 import 'package:fire_flutter/models/user_model.dart';
 import 'package:fire_flutter/screens/userSignup/user_form.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 

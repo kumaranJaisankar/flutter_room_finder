@@ -1,7 +1,7 @@
-import 'package:fire_flutter/searchAction/search_delegate.dart';
+import 'package:fire_flutter/utils/searchAction/search_delegate.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../utils/helper_widgets.dart';
+import '../../../../../utils/helperwidgets/helper_widgets.dart';
 
 class SearchActionsAndFilter extends StatelessWidget {
   const SearchActionsAndFilter({
@@ -20,7 +20,7 @@ class SearchActionsAndFilter extends StatelessWidget {
               alignment: Alignment.centerLeft,
               height: 45.0,
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(5.0)),
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),

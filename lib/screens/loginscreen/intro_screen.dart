@@ -1,7 +1,7 @@
 import 'package:fire_flutter/controller/signup_controller.dart';
 import 'package:fire_flutter/controller/verify_otp.dart';
 import 'package:fire_flutter/screens/loginscreen/phone_num_screen.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

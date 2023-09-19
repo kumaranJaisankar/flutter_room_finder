@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../models/user_model.dart';
-import '../../../../../utils/helper_widgets.dart';
+import '../../../../../utils/helperwidgets/helper_widgets.dart';
 
 class HeaderUserDetail extends StatefulWidget {
   const HeaderUserDetail({

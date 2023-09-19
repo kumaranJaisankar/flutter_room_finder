@@ -1,5 +1,5 @@
 import 'package:fire_flutter/screens/NavScreens/listofscreens/homeScreen/helperwidgets/search_bar.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 

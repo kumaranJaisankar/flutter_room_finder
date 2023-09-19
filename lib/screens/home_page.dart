@@ -6,9 +6,9 @@ import 'package:fire_flutter/constants/common_constant.dart';
 import 'package:fire_flutter/controller/auth_controller.dart';
 import 'package:fire_flutter/models/room_model.dart';
 import 'package:fire_flutter/screens/AddRoomScreen/add_rooms.dart';
-import 'package:fire_flutter/screens/detailViews/detail_view.dart';
-import 'package:fire_flutter/searchAction/search_delegate.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
+import 'package:fire_flutter/screens/roomdetail/detail_view.dart';
+import 'package:fire_flutter/utils/searchAction/search_delegate.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -166,13 +166,13 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => HeroPage(room: room)));
+                      builder: (context) => RoomDetailScreen(room: room)));
             },
             leading: SizedBox(
                 width: 50.0,
                 child: Hero(
                     tag: room.id,
-                    child: Image.network(room.imgUrl, fit: BoxFit.cover))),
+                    child: Image.network(room.imgUrl, fit: BoxFit.fill))),
             title: Text(room.roomName),
             subtitle: Text('Rs:${room.price}/- per month'),
             trailing: Row(

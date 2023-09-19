@@ -1,19 +1,26 @@
 // import 'package:file_picker/file_picker.dart';
 // ignore_for_file: empty_constructor_bodies
 
+import 'dart:convert';
 import 'dart:io';
+import 'package:fire_flutter/constants/json_notifi.dart';
 import 'package:fire_flutter/screens/AddRoomScreen/helperwidget/rating_bar.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fire_flutter/models/room_model.dart';
-import 'package:fire_flutter/utils/helper_widgets.dart';
+import 'package:fire_flutter/screens/roomdetail/detail_view.dart';
+import 'package:fire_flutter/testing/notification_testing.dart';
+import 'package:fire_flutter/utils/helperwidgets/helper_widgets.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+
+import '../../models/user_model.dart';
 
 class AddRooms extends StatefulWidget {
   const AddRooms({super.key});
@@ -215,27 +222,9 @@ class _AddRoomsState extends State<AddRooms> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      var strs = {
-                        "imgUrl":
-                            "https://firebasestorage.googleapis.com/v0/b/my-portfolio-fe1ff.appspot.com/o/1bhk-wadala.jpg?alt=media&token=1031fbe9-ff49-4c90-86f7-3e1a1f3ca932",
-                        "isAvalibale": true,
-                        "geoLocation": {
-                          'latitude': 25.62846608199264,
-                          'longitude': 85.13447944266653
-                        },
-                        "price": 7000,
-                        "rating": 3.5,
-                        "location": "Hydrabad",
-                        "id": "7tY6L6DWQk2QZbowzGlS",
-                        "roomName": "1bhk"
-                      };
-                      strs['geoLocation'] = {'name': 'kumaran'};
-                      print(strs);
-                      // var poin = Rooms.geoPointJson(strs);
-                      // // print(Rooms.fromJson(strs));
-                      // print(poin.geoLocation.latitude);
+                      Get.to(() => NotificationTesting());
                     },
-                    child: Text('Testing 😯'))
+                    child: Text('Notification Testing 🛰'))
               ],
             ),
           ),

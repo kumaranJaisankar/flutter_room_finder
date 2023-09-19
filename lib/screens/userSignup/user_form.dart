@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../utils/custom_widgets.dart';
-import '../../utils/helper_widgets.dart';
+import '../../utils/customwidgets/custom_widgets.dart';
+import '../../utils/helperwidgets/helper_widgets.dart';
 import 'package:path/path.dart' as p;
 import 'package:image_cropper/image_cropper.dart';
 
